@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+config/secrets.json
+playwright-report/
+test-results/
+reports/latest/*
+reports/history/*
+!reports/latest/.gitkeep
+!reports/history/.gitkeep
+coverage/
+*.log

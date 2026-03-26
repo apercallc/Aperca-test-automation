@@ -1,0 +1,9 @@
+{
+  "parallel": true,
+  "maxThreads": 5,
+  "retryCount": 2,
+  "flakeDetection": true,
+  "timeoutMs": 45000,
+  "failureScreenshot": true,
+  "artifactsDir": "reports/latest/artifacts"
+}
