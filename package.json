@@ -15,6 +15,7 @@
     "test": "npm run workflow -- --mode=execute",
     "test:smoke": "playwright test tests/stable/smoke.spec.ts",
     "workflow": "tsx src/cli/run-workflow.ts",
+    "workflow:doctor": "tsx src/cli/run-workflow.ts --mode=doctor",
     "workflow:plan": "tsx src/cli/run-workflow.ts --mode=plan",
     "workflow:generate": "tsx src/cli/run-workflow.ts --mode=generate",
     "report:open": "playwright show-report"
@@ -30,12 +31,14 @@
   "author": "Aperca LLC",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.58.0",
     "@types/node": "^24.6.0",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
     "@typescript-eslint/parser": "^8.30.1",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.1",
+    "globals": "^16.4.0",
     "prettier": "^3.5.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"

@@ -8,18 +8,34 @@
       "acceptanceCriteria": [
         "Visitor can open the homepage",
         "Primary navigation is visible",
-        "Contact call-to-action is visible"
-      ]
+        "Products call-to-action is visible",
+        "Visitor can navigate from homepage to products"
+      ],
+      "description": "Public homepage should communicate Aperca's value proposition and allow visitors to continue into the products catalog."
     },
     {
       "id": "APR-002",
-      "title": "Contact flow is reachable from homepage",
+      "title": "Products catalog supports discovery and product detail navigation",
       "source": "manual-seed",
       "priority": "medium",
       "acceptanceCriteria": [
-        "Homepage contains a contact-related link or button",
-        "The destination page returns HTTP 200 or renders successfully"
-      ]
+        "Visitor can open the products catalog",
+        "Visitor can search for a known product",
+        "Visitor can open a product detail page from the catalog"
+      ],
+      "description": "Product discovery should work from the public products catalog without requiring authentication."
+    },
+    {
+      "id": "APR-003",
+      "title": "Contact page exposes the public inquiry form",
+      "source": "manual-seed",
+      "priority": "medium",
+      "acceptanceCriteria": [
+        "Visitor can open the contact page",
+        "Base inquiry fields are visible",
+        "General contact submission starts disabled before required fields are filled"
+      ],
+      "description": "Users should be able to access the contact form safely without the framework submitting live contact data during automation."
     }
   ]
 }

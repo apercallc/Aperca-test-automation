@@ -4,7 +4,8 @@ test('@high @generated @positive Homepage loads and exposes primary navigation b
   await page.goto('/');
   // Visitor can open the homepage
   // Primary navigation is visible
-  // Contact call-to-action is visible
+  // Products call-to-action is visible
+  // Visitor can navigate from homepage to products
   await expect(page).toHaveURL(/apercallc\.com|staging\.apercallc\.com|localhost/);
   await expect(page.locator('body')).toBeVisible();
 });

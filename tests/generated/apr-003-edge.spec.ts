@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('@medium @generated @edge Products catalog supports discovery and product detail navigation remains stable under edge conditions', async ({ page }) => {
+test('@medium @generated @edge Contact page exposes the public inquiry form remains stable under edge conditions', async ({ page }) => {
   await page.goto('/');
   // Core content remains visible
   // No critical console or page crash occurs

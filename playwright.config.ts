@@ -1,9 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'node:path';
 
 import env from './config/env.json' with { type: 'json' };
 import testConfig from './config/test-config.json' with { type: 'json' };
 
-const baseURL = process.env.APERCa_BASE_URL ?? env.default.baseUrl;
+const baseURL = process.env.APERCA_BASE_URL ?? env.default.baseUrl;
+const outputDir = process.env.APERCA_OUTPUT_DIR ?? 'reports/latest';
 
 export default defineConfig({
   testDir: './tests',
@@ -15,7 +17,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ['json', { outputFile: 'reports/latest/playwright-report.json' }],
+    ['json', { outputFile: path.join(outputDir, 'playwright-report.json') }],
   ],
   use: {
     baseURL,

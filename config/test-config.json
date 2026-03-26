@@ -5,5 +5,17 @@
   "flakeDetection": true,
   "timeoutMs": 45000,
   "failureScreenshot": true,
-  "artifactsDir": "reports/latest/artifacts"
+  "artifactsDir": "reports/latest/artifacts",
+  "archiveHistory": true,
+  "notifyOnSuccess": false,
+  "notifyOnFailure": true,
+  "safeMode": true,
+  "redactSensitiveData": true,
+  "persistRawArtifacts": false,
+  "exportCsv": true,
+  "createJiraDefects": false,
+  "syncZephyr": false,
+  "requireEnvironmentReady": true,
+  "executeStable": true,
+  "executeGenerated": false
 }

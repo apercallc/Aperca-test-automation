@@ -10,6 +10,7 @@ Production-grade baseline for an AI-assisted QA orchestration framework targetin
 - Generated test pipeline from requirement JSON input
 - Structured reporting artifacts in `reports/latest/`
 - CI workflow for GitHub Actions
+- New-hire onboarding and maintenance handbook
 
 ## Project structure
 
@@ -36,9 +37,23 @@ cd /Users/tommyhoang/Aperca-test-automation
 npm install
 npx playwright install chromium
 cp config/secrets.example.json config/secrets.json
+npm run workflow:doctor
 npm run workflow:plan
 npm run workflow
 ```
+
+## Documentation
+
+- [New Hire Handbook](/Users/tommyhoang/Aperca-test-automation/docs/new-hire-handbook.md)
+  Learn the architecture, operating model, maintenance expectations, and daily commands.
+- [Operations Runbook](/Users/tommyhoang/Aperca-test-automation/docs/OPERATIONS.md)
+  Use for stricter execution standards, CI discipline, incident response, and release checks.
+- [Architecture](/Users/tommyhoang/Aperca-test-automation/docs/ARCHITECTURE.md)
+  Use for system design, data flow, trust boundaries, and extension planning.
+- [Integrations](/Users/tommyhoang/Aperca-test-automation/docs/INTEGRATIONS.md)
+  Use for Slack, Jira, GitHub, and API-key setup.
+- [Main Workflow](/Users/tommyhoang/Aperca-test-automation/workflows/main.md)
+  Understand the orchestration stages and outputs.
 
 ## Workflow modes
 
@@ -48,6 +63,8 @@ npm run workflow
   Loads requirements and writes generated Playwright specs into `tests/generated/`.
 - `npm run workflow`
   Executes the full pipeline, including Playwright test execution and report generation.
+- `npm run workflow:doctor`
+  Validates configuration, secrets presence, and integration readiness.
 
 ## Configuration
 
@@ -57,8 +74,12 @@ npm run workflow
   Parallelization, retries, timeouts, and artifact behavior.
 - `config/secrets.json`
   Local-only secret material for Jira, GitHub, and test credentials.
+- `config/secrets.example.json`
+  Includes Slack webhook and API-key placeholders for integrations.
 - `config/requirements.sample.json`
   Sample requirement feed used by the orchestrator.
+- `APERCA_REQUIREMENTS_SOURCE`
+  Switches requirement intake between `file` and `jira`.
 
 ## Reporting
 
@@ -69,12 +90,18 @@ Primary artifacts are written to `reports/latest/`:
 - `requirements.json`
 - `defects.json`
 - `playwright-report.json`
+- `doctor.json`
+- `archive.json`
+- `security-posture.json`
+- `test-cases.csv`
 
 For HTML inspection, run:
 
 ```bash
 npm run report:open
 ```
+
+Note: when `persistRawArtifacts` is `false` in [test-config.json](/Users/tommyhoang/Aperca-test-automation/config/test-config.json), raw Playwright HTML and `test-results` are removed after execution for safer default handling.
 
 ## Recommended next extensions
 
