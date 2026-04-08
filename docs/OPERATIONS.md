@@ -25,7 +25,7 @@ This file is stricter than the handbook. The handbook teaches the system. This r
 
 ## Required local checks before merge
 
-Run these from [Aperca-test-automation](/Users/tommyhoang/Aperca-test-automation):
+Run these from the project root:
 
 ```bash
 npm install
@@ -63,9 +63,9 @@ npm run workflow
 
 You must review:
 
-- [generated-cases.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/generated-cases.json)
+- [generated-cases.json](../reports/latest/generated-cases.json)
 - generated specs under `tests/generated/`
-- [summary.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/summary.json)
+- [summary.json](../reports/latest/summary.json)
 
 ## Normal run procedure
 
@@ -80,7 +80,7 @@ You must review:
 
 ### CI run expectation
 
-The GitHub Actions workflow at [ci.yml](/Users/tommyhoang/Aperca-test-automation/.github/workflows/ci.yml) should:
+The GitHub Actions workflow at [ci.yml](../.github/workflows/ci.yml) should:
 
 1. Install dependencies.
 2. Install Playwright browser runtime.
@@ -105,7 +105,7 @@ Required actions:
 
 1. Explain the change in the pull request.
 2. Run a full local workflow.
-3. Verify [playwright-report.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/playwright-report.json) and [summary.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/summary.json) still agree.
+3. Verify [playwright-report.json](../reports/latest/playwright-report.json) and [summary.json](../reports/latest/summary.json) still agree.
 4. Check that HTML report generation still works with `npm run report:open`.
 
 ### Before adding a new external integration
@@ -120,7 +120,7 @@ Examples:
 Required actions:
 
 1. Document required secrets in `config/secrets.example.json`.
-2. Update [security-guardrails.md](/Users/tommyhoang/Aperca-test-automation/skills/security-guardrails.md) if data handling changes.
+2. Update [security-guardrails.md](../skills/security-guardrails.md) if data handling changes.
 3. Add failure behavior documentation to this file.
 4. Ensure failures degrade safely and do not block artifact writing.
 
@@ -152,8 +152,8 @@ Required actions:
 
 ### Evidence to capture
 
-- [summary.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/summary.json)
-- [playwright-report.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/playwright-report.json)
+- [summary.json](../reports/latest/summary.json)
+- [playwright-report.json](../reports/latest/playwright-report.json)
 - HTML report output
 - CLI stderr and stdout from the failing run
 - changed requirement input
@@ -217,7 +217,7 @@ Do not keep a “temporary” broken reporting path in `main`. If the orchestrat
 
 1. Review stable tests for obsolete selectors or duplicated intent.
 2. Review generated tests for promotion candidates.
-3. Review retry and timeout values in [test-config.json](/Users/tommyhoang/Aperca-test-automation/config/test-config.json).
+3. Review retry and timeout values in [test-config.json](../config/test-config.json).
 4. Review CI artifact health.
 
 ### Monthly

@@ -10,3 +10,4 @@ reports/history/*
 !reports/history/.gitkeep
 coverage/
 *.log
+.DS_Store

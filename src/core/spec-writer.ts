@@ -8,19 +8,23 @@ function escapeText(value: string): string {
 }
 
 function buildSpec(caseItem: GeneratedTestCase): string {
-  const tagTitle = caseItem.tags.map((tag) => `@${tag}`).join(' ');
+  const tags = caseItem.tags.map((tag) => `'@${escapeText(tag)}'`).join(', ');
   const assertionComments = caseItem.assertions
-    .map((assertion) => `  // ${escapeText(assertion)}`)
+    .map((assertion) => `    // ${escapeText(assertion)}`)
     .join('\n');
 
   return `import { expect, test } from '@playwright/test';
 
-test('${escapeText(tagTitle)} ${escapeText(caseItem.title)}', async ({ page }) => {
-  await page.goto('/');
+test(
+  '${escapeText(caseItem.title)}',
+  { tag: [${tags}] },
+  async ({ page }) => {
+    await page.goto('/');
 ${assertionComments}
-  await expect(page).toHaveURL(/apercallc\\.com|staging\\.apercallc\\.com|localhost/);
-  await expect(page.locator('body')).toBeVisible();
-});
+    await expect(page).toHaveURL(/apercallc\\.com|staging\\.apercallc\\.com|localhost/);
+    await expect(page.locator('body')).toBeVisible();
+  },
+);
 `;
 }
 

@@ -14,7 +14,10 @@ export async function runDoctor(config: ResolvedConfig): Promise<DoctorReport> {
 
   checks.push({
     name: 'Requirements File',
-    ok: config.requirementsSource === 'jira' ? true : await pathExists(config.requirementsPath),
+    ok:
+      config.requirementsSource === 'jira'
+        ? true
+        : await pathExists(config.requirementsPath),
     details:
       config.requirementsSource === 'jira'
         ? 'Requirement intake uses Jira search'
@@ -39,9 +42,12 @@ export async function runDoctor(config: ResolvedConfig): Promise<DoctorReport> {
 
   checks.push({
     name: 'LLM API Key',
-    ok: Boolean(config.secrets.apiKeys?.openai || config.secrets.apiKeys?.anthropic),
+    ok: Boolean(
+      config.secrets.apiKeys?.openai || config.secrets.apiKeys?.anthropic,
+    ),
     details:
-      isConfigured(config.secrets.apiKeys?.openai) || isConfigured(config.secrets.apiKeys?.anthropic)
+      isConfigured(config.secrets.apiKeys?.openai) ||
+      isConfigured(config.secrets.apiKeys?.anthropic)
         ? 'Configured'
         : 'Missing; external AI integrations unavailable',
   });
@@ -84,7 +90,9 @@ export async function runDoctor(config: ResolvedConfig): Promise<DoctorReport> {
       : 'Disabled; sensitive strings may persist in artifacts',
   });
 
-  const warnings = checks.filter((check) => !check.ok).map((check) => `${check.name}: ${check.details}`);
+  const warnings = checks
+    .filter((check) => !check.ok)
+    .map((check) => `${check.name}: ${check.details}`);
 
   return {
     ok: warnings.length === 0,
@@ -116,5 +124,9 @@ function isValidHttpUrl(value: string): boolean {
 }
 
 function isConfigured(value: unknown): value is string {
-  return typeof value === 'string' && value.trim().length > 0 && value.trim() !== 'replace-me';
+  return (
+    typeof value === 'string' &&
+    value.trim().length > 0 &&
+    value.trim() !== 'replace-me'
+  );
 }

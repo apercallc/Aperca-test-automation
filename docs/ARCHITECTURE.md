@@ -31,7 +31,7 @@ The current architecture is built around these goals:
 
 ### 1. CLI orchestration layer
 
-The entrypoint is [run-workflow.ts](/Users/tommyhoang/Aperca-test-automation/src/cli/run-workflow.ts).
+The entrypoint is [run-workflow.ts](../src/cli/run-workflow.ts).
 
 Responsibilities:
 
@@ -47,7 +47,7 @@ This file is the orchestration spine. It should remain thin. Business logic belo
 
 ### 2. Requirement ingestion layer
 
-The current loader is [requirement-loader.ts](/Users/tommyhoang/Aperca-test-automation/src/core/requirement-loader.ts).
+The current loader is [requirement-loader.ts](../src/core/requirement-loader.ts).
 
 Responsibilities:
 
@@ -69,7 +69,7 @@ Expected future extensions:
 
 ### 3. Test case generation layer
 
-The current generator is [test-generator.ts](/Users/tommyhoang/Aperca-test-automation/src/core/test-generator.ts).
+The current generator is [test-generator.ts](../src/core/test-generator.ts).
 
 Responsibilities:
 
@@ -88,7 +88,7 @@ This layer is where most future product intelligence should live. If the team wa
 
 ### 4. Spec materialization layer
 
-The current writer is [spec-writer.ts](/Users/tommyhoang/Aperca-test-automation/src/core/spec-writer.ts).
+The current writer is [spec-writer.ts](../src/core/spec-writer.ts).
 
 Responsibilities:
 
@@ -107,7 +107,7 @@ This is not yet a page-object or domain-specific automation generator. It is a s
 
 ### 5. Execution layer
 
-The runner is [executor.ts](/Users/tommyhoang/Aperca-test-automation/src/core/executor.ts).
+The runner is [executor.ts](../src/core/executor.ts).
 
 Responsibilities:
 
@@ -122,7 +122,7 @@ Execution summary is derived from Playwright’s JSON report, not inferred from 
 
 ### 6. Reporting layer
 
-The current reporting logic is [reporter.ts](/Users/tommyhoang/Aperca-test-automation/src/core/reporter.ts).
+The current reporting logic is [reporter.ts](../src/core/reporter.ts).
 
 Responsibilities:
 
@@ -155,7 +155,7 @@ Requirement Input
 ### Step-by-step flow
 
 1. Requirement input is read from `config/requirements.sample.json` or the path defined by `APERCA_REQUIREMENTS_PATH`.
-2. Requirements are converted into the internal `Requirement` contract defined in [contracts.ts](/Users/tommyhoang/Aperca-test-automation/src/types/contracts.ts).
+2. Requirements are converted into the internal `Requirement` contract defined in [contracts.ts](../src/types/contracts.ts).
 3. Test cases are created in memory.
 4. Generated specs are written to `tests/generated/`.
 5. If the mode is `execute`, Playwright runs against all tests in `tests/`.
@@ -164,7 +164,7 @@ Requirement Input
 
 ## Workflow modes and control flow
 
-Supported modes are implemented in [run-workflow.ts](/Users/tommyhoang/Aperca-test-automation/src/cli/run-workflow.ts):
+Supported modes are implemented in [run-workflow.ts](../src/cli/run-workflow.ts):
 
 - `plan`
   Generate cases and specs, but do not execute Playwright.
@@ -179,7 +179,7 @@ Today, both `plan` and `generate` write generated specs. That is acceptable for 
 
 ## Contracts and schemas
 
-The internal contracts live in [contracts.ts](/Users/tommyhoang/Aperca-test-automation/src/types/contracts.ts).
+The internal contracts live in [contracts.ts](../src/types/contracts.ts).
 
 Key contracts:
 
@@ -244,7 +244,7 @@ These are the main places to extend the system safely.
 
 ### External requirement sources
 
-Extend [requirement-loader.ts](/Users/tommyhoang/Aperca-test-automation/src/core/requirement-loader.ts) to support:
+Extend [requirement-loader.ts](../src/core/requirement-loader.ts) to support:
 
 - Jira
 - product specs
@@ -255,7 +255,7 @@ Add schema validation before those sources are trusted.
 
 ### Smarter test generation
 
-Extend [test-generator.ts](/Users/tommyhoang/Aperca-test-automation/src/core/test-generator.ts) to:
+Extend [test-generator.ts](../src/core/test-generator.ts) to:
 
 - use richer requirement semantics
 - infer business flows
@@ -264,7 +264,7 @@ Extend [test-generator.ts](/Users/tommyhoang/Aperca-test-automation/src/core/tes
 
 ### Domain-aware automation generation
 
-Extend [spec-writer.ts](/Users/tommyhoang/Aperca-test-automation/src/core/spec-writer.ts) or replace it with a layered generator that understands:
+Extend [spec-writer.ts](../src/core/spec-writer.ts) or replace it with a layered generator that understands:
 
 - shared fixtures
 - page models
@@ -274,7 +274,7 @@ Extend [spec-writer.ts](/Users/tommyhoang/Aperca-test-automation/src/core/spec-w
 
 ### Failure classification and defect creation
 
-Extend [reporter.ts](/Users/tommyhoang/Aperca-test-automation/src/core/reporter.ts) to:
+Extend [reporter.ts](../src/core/reporter.ts) to:
 
 - classify likely root cause
 - enrich defect payloads
@@ -340,11 +340,11 @@ If old artifacts are mistaken for new ones, reporting can be misleading. Operati
 
 ## Reading order for engineers making major changes
 
-1. Read [README.md](/Users/tommyhoang/Aperca-test-automation/README.md).
-2. Read [new-hire-handbook.md](/Users/tommyhoang/Aperca-test-automation/docs/new-hire-handbook.md).
-3. Read [OPERATIONS.md](/Users/tommyhoang/Aperca-test-automation/docs/OPERATIONS.md).
-4. Read [main.md](/Users/tommyhoang/Aperca-test-automation/workflows/main.md).
-5. Read [run-workflow.ts](/Users/tommyhoang/Aperca-test-automation/src/cli/run-workflow.ts).
+1. Read [README.md](../README.md).
+2. Read [new-hire-handbook.md](new-hire-handbook.md).
+3. Read [OPERATIONS.md](OPERATIONS.md).
+4. Read [main.md](../workflows/main.md).
+5. Read [run-workflow.ts](../src/cli/run-workflow.ts).
 6. Read the files in `src/core/`.
 
 ## Final architectural rule

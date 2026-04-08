@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rm -rf dist test-results playwright-report",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "test": "npm run workflow -- --mode=execute",
     "test:smoke": "playwright test tests/stable/smoke.spec.ts",

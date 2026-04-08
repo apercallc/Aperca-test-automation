@@ -36,10 +36,16 @@ export async function archiveLatestReport(
     try {
       if (fileName.endsWith('.csv')) {
         const content = await readFile(source, 'utf8');
-        await writeTextFile(path.join(historyDir, fileName), sanitizeForPersistence(content));
+        await writeTextFile(
+          path.join(historyDir, fileName),
+          sanitizeForPersistence(content),
+        );
       } else {
         const content = await readJsonFile<unknown>(source);
-        await writeJsonFile(path.join(historyDir, fileName), sanitizeForPersistence(content));
+        await writeJsonFile(
+          path.join(historyDir, fileName),
+          sanitizeForPersistence(content),
+        );
       }
     } catch {
       // Missing artifacts are tolerated so plan mode can archive partial outputs.
@@ -52,7 +58,10 @@ export async function archiveLatestReport(
     await ensureDir(archivedEvidenceDir);
     const evidenceFiles = await readdir(evidenceDir);
     for (const fileName of evidenceFiles) {
-      await copyPath(path.join(evidenceDir, fileName), path.join(archivedEvidenceDir, fileName));
+      await copyPath(
+        path.join(evidenceDir, fileName),
+        path.join(archivedEvidenceDir, fileName),
+      );
     }
   }
 

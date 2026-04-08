@@ -36,26 +36,42 @@ interface JiraDescription {
   }>;
 }
 
-export async function loadRequirementsFromJira(config: ResolvedConfig): Promise<Requirement[]> {
-  if (!config.secrets.jira?.baseUrl || !config.secrets.jira.email || !config.secrets.jira.apiToken) {
-    throw new Error('Jira credentials are required for Jira-backed requirement intake.');
+export async function loadRequirementsFromJira(
+  config: ResolvedConfig,
+): Promise<Requirement[]> {
+  if (
+    !config.secrets.jira?.baseUrl ||
+    !config.secrets.jira.email ||
+    !config.secrets.jira.apiToken
+  ) {
+    throw new Error(
+      'Jira credentials are required for Jira-backed requirement intake.',
+    );
   }
 
   const jql =
-    process.env.APERCA_JIRA_REQUIREMENTS_JQL ?? config.secrets.jira.requirementsJql ?? '';
+    process.env.APERCA_JIRA_REQUIREMENTS_JQL ??
+    config.secrets.jira.requirementsJql ??
+    '';
 
   if (!jql) {
-    throw new Error('Jira requirement intake requires APERCA_JIRA_REQUIREMENTS_JQL or jira.requirementsJql.');
+    throw new Error(
+      'Jira requirement intake requires APERCA_JIRA_REQUIREMENTS_JQL or jira.requirementsJql.',
+    );
   }
 
-  const response = await jiraFetch<JiraSearchResponse>(config, '/rest/api/3/search', {
-    method: 'POST',
-    body: {
-      jql,
-      maxResults: 50,
-      fields: ['summary', 'description', 'labels', 'priority'],
+  const response = await jiraFetch<JiraSearchResponse>(
+    config,
+    '/rest/api/3/search',
+    {
+      method: 'POST',
+      body: {
+        jql,
+        maxResults: 50,
+        fields: ['summary', 'description', 'labels', 'priority'],
+      },
     },
-  });
+  );
 
   return response.issues.map((issue) => {
     const description = flattenJiraDescription(issue.fields.description);
@@ -72,7 +88,9 @@ export async function loadRequirementsFromJira(config: ResolvedConfig): Promise<
       acceptanceCriteria:
         acceptanceCriteria.length > 0
           ? acceptanceCriteria
-          : ['Requirement imported from Jira. Acceptance criteria need refinement.'],
+          : [
+              'Requirement imported from Jira. Acceptance criteria need refinement.',
+            ],
     };
   });
 }
@@ -85,7 +103,11 @@ export async function createJiraDefects(
     return [];
   }
 
-  if (!config.secrets.jira?.baseUrl || !config.secrets.jira.email || !config.secrets.jira.apiToken) {
+  if (
+    !config.secrets.jira?.baseUrl ||
+    !config.secrets.jira.email ||
+    !config.secrets.jira.apiToken
+  ) {
     return [];
   }
 
@@ -105,28 +127,37 @@ export async function createJiraDefects(
       ...defect.evidence.map((item) => `- ${item}`),
     ].join('\n');
 
-    const response = await jiraFetch<JiraCreateIssueResponse>(config, '/rest/api/3/issue', {
-      method: 'POST',
-      body: {
-        fields: {
-          project: {
-            key: config.secrets.jira.projectKey,
+    const response = await jiraFetch<JiraCreateIssueResponse>(
+      config,
+      '/rest/api/3/issue',
+      {
+        method: 'POST',
+        body: {
+          fields: {
+            project: {
+              key: config.secrets.jira.projectKey,
+            },
+            summary: defect.title,
+            issuetype: {
+              name: issueType,
+            },
+            description,
+            labels: ['automation', 'playwright', 'generated-defect'],
           },
-          summary: defect.title,
-          issuetype: {
-            name: issueType,
-          },
-          description,
-          labels: ['automation', 'playwright', 'generated-defect'],
         },
       },
-    });
+    );
 
     const url = `${config.secrets.jira.baseUrl}/browse/${response.key}`;
     defect.jiraIssueKey = response.key;
     created.push({ key: response.key, url });
 
-    await attachEvidenceFiles(config, response.key, defect.evidence, config.projectRoot);
+    await attachEvidenceFiles(
+      config,
+      response.key,
+      defect.evidence,
+      config.projectRoot,
+    );
   }
 
   return created;
@@ -201,7 +232,10 @@ async function jiraFetch<T>(
     requestInit.body = body;
   }
 
-  const response = await fetch(new URL(route, config.secrets.jira?.baseUrl).toString(), requestInit);
+  const response = await fetch(
+    new URL(route, config.secrets.jira?.baseUrl).toString(),
+    requestInit,
+  );
 
   if (!response.ok) {
     const message = await response.text();

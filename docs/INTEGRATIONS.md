@@ -23,7 +23,7 @@ Scaffolded but not fully implemented yet:
 
 ## Secrets file
 
-Copy [secrets.example.json](/Users/tommyhoang/Aperca-test-automation/config/secrets.example.json) to `config/secrets.json` and replace placeholder values.
+Copy [secrets.example.json](../config/secrets.example.json) to `config/secrets.json` and replace placeholder values.
 
 ```bash
 cp config/secrets.example.json config/secrets.json
@@ -67,7 +67,7 @@ Optional:
 - success notifications are controlled by `notifyOnSuccess`
 - failure notifications are controlled by `notifyOnFailure`
 
-Configuration lives in [test-config.json](/Users/tommyhoang/Aperca-test-automation/config/test-config.json).
+Configuration lives in [test-config.json](../config/test-config.json).
 
 ## LLM API keys
 
@@ -109,13 +109,13 @@ The orchestrator can ingest requirements from Jira search and can create Jira de
 
 and provide Jira credentials in `config/secrets.json`.
 
-Defect creation is controlled by `createJiraDefects` in [test-config.json](/Users/tommyhoang/Aperca-test-automation/config/test-config.json).
+Defect creation is controlled by `createJiraDefects` in [test-config.json](../config/test-config.json).
 
 ## Zephyr
 
 ### Current state
 
-The framework exports generated test cases to [test-cases.csv](/Users/tommyhoang/Aperca-test-automation/reports/latest/test-cases.csv), which can be imported into Zephyr. Direct Zephyr API sync is not yet implemented because Zephyr product variants differ materially.
+The framework exports generated test cases to [test-cases.csv](../reports/latest/test-cases.csv), which can be imported into Zephyr. Direct Zephyr API sync is not yet implemented because Zephyr product variants differ materially.
 
 Current supported mode:
 

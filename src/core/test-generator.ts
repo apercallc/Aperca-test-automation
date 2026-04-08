@@ -1,6 +1,8 @@
 import type { GeneratedTestCase, Requirement } from '../types/contracts.js';
 
-export function generateTestCases(requirements: Requirement[]): GeneratedTestCase[] {
+export function generateTestCases(
+  requirements: Requirement[],
+): GeneratedTestCase[] {
   return requirements.flatMap((requirement) => {
     const baseSlug = requirement.id.toLowerCase();
     const cases: GeneratedTestCase[] = [
@@ -20,8 +22,14 @@ export function generateTestCases(requirements: Requirement[]): GeneratedTestCas
         title: `${requirement.title} remains stable under edge conditions`,
         type: 'edge',
         preconditions: ['Network and page resources are available'],
-        steps: ['Open the target page', 'Validate fallback or structural resilience'],
-        assertions: ['Core content remains visible', 'No critical console or page crash occurs'],
+        steps: [
+          'Open the target page',
+          'Validate fallback or structural resilience',
+        ],
+        assertions: [
+          'Core content remains visible',
+          'No critical console or page crash occurs',
+        ],
         tags: [requirement.priority, 'generated', 'edge'],
       },
     ];
@@ -34,7 +42,9 @@ export function generateTestCases(requirements: Requirement[]): GeneratedTestCas
         type: 'negative',
         preconditions: ['A visitor starts from the public site'],
         steps: ['Attempt a partial or invalid user path'],
-        assertions: ['The application fails safely without blank or broken critical UI'],
+        assertions: [
+          'The application fails safely without blank or broken critical UI',
+        ],
         tags: [requirement.priority, 'generated', 'negative'],
       });
     }

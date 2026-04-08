@@ -6,7 +6,7 @@ This document defines how the framework handles sensitive data and what operator
 
 ## Current secure-by-default controls
 
-- `safeMode` defaults to `true` in [test-config.json](/Users/tommyhoang/Aperca-test-automation/config/test-config.json)
+- `safeMode` defaults to `true` in [test-config.json](../config/test-config.json)
 - `redactSensitiveData` defaults to `true`
 - persisted workflow artifacts are sanitized before being written
 - Slack notifications send reduced summaries in safe mode
@@ -16,7 +16,7 @@ This document defines how the framework handles sensitive data and what operator
 
 ## What gets redacted
 
-The redaction layer in [redaction.ts](/Users/tommyhoang/Aperca-test-automation/src/core/redaction.ts) masks common sensitive values such as:
+The redaction layer in [redaction.ts](../src/core/redaction.ts) masks common sensitive values such as:
 
 - emails
 - phone numbers
@@ -52,8 +52,8 @@ npm run workflow:doctor
 
 Review:
 
-- [doctor.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/doctor.json)
-- [security-posture.json](/Users/tommyhoang/Aperca-test-automation/reports/latest/security-posture.json)
+- [doctor.json](../reports/latest/doctor.json)
+- [security-posture.json](../reports/latest/security-posture.json)
 
 ## Recommended operating policy
 

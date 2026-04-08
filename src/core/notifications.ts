@@ -6,7 +6,8 @@ export async function maybeSendSlackNotification(
   summary: WorkflowSummary,
 ): Promise<{ sent: boolean; reason?: string }> {
   const webhookUrl =
-    process.env.APERCA_SLACK_WEBHOOK_URL ?? config.secrets.notifications?.slack?.webhookUrl;
+    process.env.APERCA_SLACK_WEBHOOK_URL ??
+    config.secrets.notifications?.slack?.webhookUrl;
 
   if (!webhookUrl) {
     return { sent: false, reason: 'Slack webhook not configured' };
@@ -24,7 +25,8 @@ export async function maybeSendSlackNotification(
 
   const payload = {
     text: redactString(buildSlackText(summary, config.test.safeMode)),
-    username: config.secrets.notifications?.slack?.username ?? 'Aperca QA Orchestrator',
+    username:
+      config.secrets.notifications?.slack?.username ?? 'Aperca QA Orchestrator',
     channel: config.secrets.notifications?.slack?.channel,
   };
 
@@ -44,7 +46,8 @@ export async function maybeSendSlackNotification(
 }
 
 function buildSlackText(summary: WorkflowSummary, safeMode: boolean): string {
-  const status = summary.execution && summary.execution.failed > 0 ? 'FAILED' : 'PASSED';
+  const status =
+    summary.execution && summary.execution.failed > 0 ? 'FAILED' : 'PASSED';
   const executionLine = summary.execution
     ? `passed=${summary.execution.passed}, failed=${summary.execution.failed}, flaky=${summary.execution.flaky}`
     : 'execution skipped';

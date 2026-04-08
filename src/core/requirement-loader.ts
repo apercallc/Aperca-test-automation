@@ -5,7 +5,9 @@ interface RequirementFile {
   requirements: Requirement[];
 }
 
-export async function loadRequirements(requirementPath: string): Promise<Requirement[]> {
+export async function loadRequirements(
+  requirementPath: string,
+): Promise<Requirement[]> {
   const content = await readJsonFile<RequirementFile>(requirementPath);
   return content.requirements.map(validateRequirement);
 }
@@ -15,8 +17,13 @@ function validateRequirement(requirement: Requirement): Requirement {
     throw new Error('Each requirement must include id, title, and source.');
   }
 
-  if (!Array.isArray(requirement.acceptanceCriteria) || requirement.acceptanceCriteria.length === 0) {
-    throw new Error(`Requirement ${requirement.id} must include at least one acceptance criterion.`);
+  if (
+    !Array.isArray(requirement.acceptanceCriteria) ||
+    requirement.acceptanceCriteria.length === 0
+  ) {
+    throw new Error(
+      `Requirement ${requirement.id} must include at least one acceptance criterion.`,
+    );
   }
 
   return requirement;

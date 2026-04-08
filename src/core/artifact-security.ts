@@ -1,7 +1,13 @@
 import path from 'node:path';
 
 import { sanitizeForPersistence } from './redaction.js';
-import { copyPath, pathExists, readJsonFile, removePath, writeJsonFile } from '../utils/fs.js';
+import {
+  copyPath,
+  pathExists,
+  readJsonFile,
+  removePath,
+  writeJsonFile,
+} from '../utils/fs.js';
 
 interface PlaywrightAttachment {
   name?: string;
@@ -30,7 +36,9 @@ export async function secureArtifacts(
 
   if (options.redactSensitiveData && (await pathExists(jsonReportPath))) {
     const report = await readJsonFile<PlaywrightResultNode>(jsonReportPath);
-    preservedEvidence.push(...(await preserveFailureEvidence(projectRoot, outputDir, report)));
+    preservedEvidence.push(
+      ...(await preserveFailureEvidence(projectRoot, outputDir, report)),
+    );
     await writeJsonFile(jsonReportPath, sanitizeForPersistence(report));
   }
 
@@ -69,9 +77,16 @@ async function preserveFailureEvidence(
   return kept;
 }
 
-function collectAttachments(node: PlaywrightResultNode): PlaywrightAttachment[] {
+function collectAttachments(
+  node: PlaywrightResultNode,
+): PlaywrightAttachment[] {
   const attachments = [...(node.attachments ?? [])];
-  for (const childCollection of [node.results, node.tests, node.specs, node.suites]) {
+  for (const childCollection of [
+    node.results,
+    node.tests,
+    node.specs,
+    node.suites,
+  ]) {
     for (const child of childCollection ?? []) {
       attachments.push(...collectAttachments(child));
     }

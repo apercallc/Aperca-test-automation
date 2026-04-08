@@ -27,22 +27,33 @@ function isConfiguredSecret(value: unknown): value is string {
   );
 }
 
-export async function loadResolvedConfig(projectRoot: string): Promise<ResolvedConfig> {
-  const envFile = await readJsonFile<EnvironmentFile>(path.join(projectRoot, 'config/env.json'));
-  const testFile = await readJsonFile<TestConfig>(path.join(projectRoot, 'config/test-config.json'));
+export async function loadResolvedConfig(
+  projectRoot: string,
+): Promise<ResolvedConfig> {
+  const envFile = await readJsonFile<EnvironmentFile>(
+    path.join(projectRoot, 'config/env.json'),
+  );
+  const testFile = await readJsonFile<TestConfig>(
+    path.join(projectRoot, 'config/test-config.json'),
+  );
   const environmentName = process.env.APERCA_ENVIRONMENT ?? 'default';
   const environment = envFile[environmentName] ?? envFile.default;
   const requirementsPath = path.resolve(
     projectRoot,
     process.env.APERCA_REQUIREMENTS_PATH ?? './config/requirements.sample.json',
   );
-  const requirementsSource = process.env.APERCA_REQUIREMENTS_SOURCE === 'jira' ? 'jira' : 'file';
-  const outputDir = path.resolve(projectRoot, process.env.APERCA_OUTPUT_DIR ?? './reports/latest');
+  const requirementsSource =
+    process.env.APERCA_REQUIREMENTS_SOURCE === 'jira' ? 'jira' : 'file';
+  const outputDir = path.resolve(
+    projectRoot,
+    process.env.APERCA_OUTPUT_DIR ?? './reports/latest',
+  );
   const secretsPath = path.resolve(projectRoot, './config/secrets.json');
   const secrets = await loadSecrets(secretsPath);
   const baseUrl = process.env.APERCA_BASE_URL ?? environment.baseUrl;
   const slackWebhook =
-    process.env.APERCA_SLACK_WEBHOOK_URL ?? secrets.notifications?.slack?.webhookUrl;
+    process.env.APERCA_SLACK_WEBHOOK_URL ??
+    secrets.notifications?.slack?.webhookUrl;
 
   return {
     environment: {
@@ -74,15 +85,21 @@ export function validateResolvedConfig(config: ResolvedConfig): string[] {
   }
 
   if (config.test.retryCount < 0) {
-    warnings.push('config/test-config.json must set retryCount to 0 or greater.');
+    warnings.push(
+      'config/test-config.json must set retryCount to 0 or greater.',
+    );
   }
 
   if (!isNonEmptyString(config.test.artifactsDir)) {
-    warnings.push('config/test-config.json must include a non-empty artifactsDir.');
+    warnings.push(
+      'config/test-config.json must include a non-empty artifactsDir.',
+    );
   }
 
   if (config.test.safeMode && config.test.persistRawArtifacts) {
-    warnings.push('safeMode is enabled while persistRawArtifacts is true. Raw artifact retention increases exposure.');
+    warnings.push(
+      'safeMode is enabled while persistRawArtifacts is true. Raw artifact retention increases exposure.',
+    );
   }
 
   if (
@@ -93,26 +110,39 @@ export function validateResolvedConfig(config: ResolvedConfig): string[] {
   }
 
   if (!isConfiguredSecret(config.secrets.github?.token)) {
-    warnings.push('GitHub token is not configured. GitHub issue automation is disabled.');
+    warnings.push(
+      'GitHub token is not configured. GitHub issue automation is disabled.',
+    );
   }
 
   if (!isConfiguredSecret(config.secrets.jira?.apiToken)) {
-    warnings.push('Jira API token is not configured. Jira requirement and defect automation is disabled.');
+    warnings.push(
+      'Jira API token is not configured. Jira requirement and defect automation is disabled.',
+    );
   }
 
   if (
     !isConfiguredSecret(config.secrets.apiKeys?.openai) &&
     !isConfiguredSecret(config.secrets.apiKeys?.anthropic)
   ) {
-    warnings.push('No LLM API key is configured. External AI-assisted generation integrations are disabled.');
+    warnings.push(
+      'No LLM API key is configured. External AI-assisted generation integrations are disabled.',
+    );
   }
 
-  if (config.requirementsSource === 'jira' && !isConfiguredSecret(config.secrets.jira?.apiToken)) {
-    warnings.push('Requirements source is Jira but Jira credentials are incomplete.');
+  if (
+    config.requirementsSource === 'jira' &&
+    !isConfiguredSecret(config.secrets.jira?.apiToken)
+  ) {
+    warnings.push(
+      'Requirements source is Jira but Jira credentials are incomplete.',
+    );
   }
 
   if (!config.notifications.slackEnabled) {
-    warnings.push('Slack webhook is not configured. Run notifications are disabled.');
+    warnings.push(
+      'Slack webhook is not configured. Run notifications are disabled.',
+    );
   }
 
   return warnings;

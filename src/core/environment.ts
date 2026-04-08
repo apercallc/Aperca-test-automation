@@ -1,6 +1,8 @@
 import type { EnvironmentReadiness } from '../types/contracts.js';
 
-export async function checkEnvironmentReadiness(baseUrl: string): Promise<EnvironmentReadiness> {
+export async function checkEnvironmentReadiness(
+  baseUrl: string,
+): Promise<EnvironmentReadiness> {
   try {
     const response = await fetch(baseUrl, {
       method: 'GET',

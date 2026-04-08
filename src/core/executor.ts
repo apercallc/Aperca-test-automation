@@ -23,7 +23,9 @@ export interface ExecutionResult {
   stderr: string;
 }
 
-export async function executePlaywrightWorkflow(testTargets: string[]): Promise<ExecutionResult> {
+export async function executePlaywrightWorkflow(
+  testTargets: string[],
+): Promise<ExecutionResult> {
   const command = ['npx', 'playwright', 'test', ...testTargets].join(' ');
   const reportPath = path.resolve(
     process.cwd(),

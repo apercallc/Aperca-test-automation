@@ -12,7 +12,10 @@ import { maybeSendSlackNotification } from '../core/notifications.js';
 import { runDoctor } from '../core/preflight.js';
 import { redactString, sanitizeForPersistence } from '../core/redaction.js';
 import { loadRequirements } from '../core/requirement-loader.js';
-import { writeWorkflowArtifacts, buildDefectsFromExecution } from '../core/reporter.js';
+import {
+  writeWorkflowArtifacts,
+  buildDefectsFromExecution,
+} from '../core/reporter.js';
 import { writeGeneratedSpecs } from '../core/spec-writer.js';
 import { generateTestCases } from '../core/test-generator.js';
 import type { WorkflowSummary } from '../types/contracts.js';
@@ -22,7 +25,12 @@ type Mode = 'plan' | 'generate' | 'execute' | 'doctor';
 
 function parseMode(argv: string[]): Mode {
   const rawArg = argv.find((arg) => arg.startsWith('--mode='))?.split('=')[1];
-  if (rawArg === 'plan' || rawArg === 'generate' || rawArg === 'execute' || rawArg === 'doctor') {
+  if (
+    rawArg === 'plan' ||
+    rawArg === 'generate' ||
+    rawArg === 'execute' ||
+    rawArg === 'doctor'
+  ) {
     return rawArg;
   }
 
@@ -66,7 +74,10 @@ async function main(): Promise<void> {
   const doctorReport = await runDoctor(config);
 
   if (mode === 'doctor') {
-    await writeJsonFile(path.join(config.outputDir, 'doctor.json'), doctorReport);
+    await writeJsonFile(
+      path.join(config.outputDir, 'doctor.json'),
+      doctorReport,
+    );
     console.log(JSON.stringify(doctorReport, null, 2));
     process.exitCode = doctorReport.ok ? 0 : 1;
     return;
@@ -83,7 +94,11 @@ async function main(): Promise<void> {
     : undefined;
   const readiness = await checkEnvironmentReadiness(config.environment.baseUrl);
 
-  if (mode === 'execute' && config.test.requireEnvironmentReady && !readiness.ready) {
+  if (
+    mode === 'execute' &&
+    config.test.requireEnvironmentReady &&
+    !readiness.ready
+  ) {
     throw new Error(
       `Environment readiness check failed for ${readiness.checkedUrl}: ${readiness.details}`,
     );
@@ -96,7 +111,9 @@ async function main(): Promise<void> {
   }
 
   const execution =
-    mode === 'execute' ? await executePlaywrightWorkflow(executionTargets) : undefined;
+    mode === 'execute'
+      ? await executePlaywrightWorkflow(executionTargets)
+      : undefined;
   const preservedEvidence =
     mode === 'execute'
       ? await secureArtifacts(projectRoot, config.outputDir, {
@@ -105,7 +122,11 @@ async function main(): Promise<void> {
         })
       : [];
 
-  const defects = buildDefectsFromExecution(requirements, preservedEvidence, execution);
+  const defects = buildDefectsFromExecution(
+    requirements,
+    preservedEvidence,
+    execution,
+  );
 
   const summary: WorkflowSummary = {
     runId,
@@ -119,7 +140,9 @@ async function main(): Promise<void> {
     readiness,
     requirements: requirements.length,
     generatedCases: generatedCases.length,
-    generatedSpecs: generatedSpecs.map((specPath) => path.relative(projectRoot, specPath)),
+    generatedSpecs: generatedSpecs.map((specPath) =>
+      path.relative(projectRoot, specPath),
+    ),
     configuration: {
       slackEnabled: config.notifications.slackEnabled,
       archiveHistory: config.test.archiveHistory,
@@ -188,7 +211,11 @@ async function main(): Promise<void> {
   );
 
   if (config.test.archiveHistory) {
-    const archivePath = await archiveLatestReport(config.outputDir, projectRoot, runId);
+    const archivePath = await archiveLatestReport(
+      config.outputDir,
+      projectRoot,
+      runId,
+    );
     await writeJsonFile(path.join(config.outputDir, 'archive.json'), {
       runId,
       archivePath: path.relative(projectRoot, archivePath),
@@ -212,7 +239,8 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.stack ?? error.message : String(error);
+  const message =
+    error instanceof Error ? (error.stack ?? error.message) : String(error);
   console.error(redactString(message));
   process.exitCode = 1;
 });

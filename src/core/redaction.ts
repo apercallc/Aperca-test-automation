@@ -38,8 +38,18 @@ export function redactString(value: string): string {
   return patternRedacted.replace(
     /\b(password|passwd|pwd|token|secret|api[_-]?key|authorization|cookie)\b(\s*[:=]\s*)(["']?)([^"',\s]+)(\3)/gi,
     (match, field, separator, quote, fieldValue, closingQuote) => {
-      const normalized = String(fieldValue).trim().toLowerCase().replace(/[^a-z]/g, '');
-      const safeLiterals = new Set(['missing', 'configured', 'disabled', 'enabled', 'true', 'false']);
+      const normalized = String(fieldValue)
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z]/g, '');
+      const safeLiterals = new Set([
+        'missing',
+        'configured',
+        'disabled',
+        'enabled',
+        'true',
+        'false',
+      ]);
       if (safeLiterals.has(normalized) || normalized.length < 8) {
         return match;
       }
@@ -64,7 +74,10 @@ function sanitizeRecursive(value: unknown): unknown {
 
   if (value && typeof value === 'object') {
     return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, sanitizeRecursive(item)]),
+      Object.entries(value).map(([key, item]) => [
+        key,
+        sanitizeRecursive(item),
+      ]),
     );
   }
 
